@@ -69,6 +69,19 @@
     0x37                     "targetInformation"		OID_TARGET_INFORMATION
     0x38                     "noRevAvail"				OID_NO_REV_AVAIL
 0x2A                         ""
+  0x81                       ""
+    0x1C                     ""
+      0xCF                   ""
+        0x55                 ""
+          0x01               ""
+            0x68             "sms4"                 OID_SMS4
+              0x02           "sms4-cbc"             OID_SMS4_CBC
+            0x82             ""
+              0x2D           "sm2p256v1"            OID_SM2P256V1
+            0x83             ""
+              0x11           "sm3"                  OID_SM3
+                0x02         "hmac-sm3"             OID_HMAC_SM3
+              0x75           "sm2-with-sm3"         OID_SM2_WITH_SM3
   0x83                       ""
     0x08                     "jp"
       0x8C                   ""

@@ -30,6 +30,7 @@
 
 #include <openssl/bn.h>
 #include <openssl/asn1.h>
+#include <openssl/ec.h>
 
 /**
  * Returns the length in bytes of a field element
@@ -47,6 +48,8 @@
  * @return			TRUE on success, FALSE otherwise
  */
 bool openssl_hash_chunk(int hash_type, chunk_t data, chunk_t *hash);
+
+bool openssl_hash_chunk_ext(int hash_type, chunk_t data, chunk_t *hash, EC_KEY *ec);
 
 /**
  * Concatenates two bignums into a chunk, thereby enfocing the length of

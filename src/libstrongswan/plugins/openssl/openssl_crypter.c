@@ -98,6 +98,8 @@ static bool crypt(private_openssl_crypter_t *this, chunk_t data, chunk_t iv,
 	u_char *out;
 	bool success = FALSE;
 
+    fprintf(stdout, "%s %s:%u - Crypter: %d\n", __FUNCTION__, __FILE__, __LINE__, this->cipher->nid);
+
 	out = data.ptr;
 	if (dst)
 	{
@@ -187,6 +189,14 @@ openssl_crypter_t *openssl_crypter_create(encryption_algorithm_t algo,
 
 	switch (algo)
 	{
+		case ENCR_SMS4:
+			this->cipher = EVP_get_cipherbyname("sms4");
+			key_size = 16;
+			break;
+		case ENCR_SMS4_CBC:
+			this->cipher = EVP_get_cipherbyname("sms4-cbc");
+			key_size = 16;
+			break;
 		case ENCR_NULL:
 			this->cipher = EVP_enc_null();
 			key_size = 0;

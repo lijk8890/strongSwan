@@ -107,6 +107,8 @@ METHOD(mac_t, get_mac, bool,
 	{
 		return FALSE;
 	}
+    fprintf(stdout, "%s %s:%u - HMAC: %d\n", __FUNCTION__, __FILE__, __LINE__, this->hasher->type);
+
 #if OPENSSL_VERSION_NUMBER >= 0x10000000L
 	if (!HMAC_Update(this->hmac, data.ptr, data.len))
 	{
@@ -161,6 +163,7 @@ static mac_t *hmac_create(hash_algorithm_t algo)
 	{
 		return NULL;
 	}
+    fprintf(stdout, "%s %s:%u - HMAC: %s\n", __FUNCTION__, __FILE__, __LINE__, name);
 
 	INIT(this,
 		.public = {

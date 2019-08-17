@@ -27,6 +27,8 @@
 #include <openssl/evp.h>
 #include <openssl/ecdsa.h>
 #include <openssl/x509.h>
+#include <openssl/sm2.h>
+#include <openssl/sm3.h>
 
 #if OPENSSL_VERSION_NUMBER < 0x10100000L
 OPENSSL_KEY_FALLBACK(ECDSA_SIG, r, s)
@@ -130,12 +132,23 @@ static bool build_der_signature(private_openssl_ec_private_key_t *this,
 	int siglen = 0;
 	bool built;
 
-	if (!openssl_hash_chunk(hash_nid, data, &hash))
+	if (!openssl_hash_chunk_ext(hash_nid, data, &hash, this->ec))
 	{
 		return FALSE;
 	}
 	sig = chunk_alloc(ECDSA_size(this->ec));
+
+if(hash_nid == NID_sm3)
+{
+	built = SM2_sign(0, hash.ptr, hash.len, sig.ptr, &siglen, this->ec) == 1;
+    fprintf(stdout, "%s %s:%u - SM2_sign: %d\n", __FUNCTION__, __FILE__, __LINE__, built);
+}
+else
+{
 	built = ECDSA_sign(0, hash.ptr, hash.len, sig.ptr, &siglen, this->ec) == 1;
+    fprintf(stdout, "%s %s:%u - ECDSA_sign: %d\n", __FUNCTION__, __FILE__, __LINE__, built);
+}
+
 	sig.len = siglen;
 	if (built)
 	{
@@ -165,6 +178,8 @@ METHOD(private_key_t, sign, bool,
 			return build_der_signature(this, NID_sha384, data, signature);
 		case SIGN_ECDSA_WITH_SHA512_DER:
 			return build_der_signature(this, NID_sha512, data, signature);
+		case SIGN_SM2_WITH_SM3_DER:
+			return build_der_signature(this, NID_sm3, data, signature);
 		case SIGN_ECDSA_256:
 			return build_curve_signature(this, scheme, NID_sha256,
 										 NID_X9_62_prime256v1, data, signature);

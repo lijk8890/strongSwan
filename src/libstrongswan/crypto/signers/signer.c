@@ -39,5 +39,7 @@ ENUM_NEXT(integrity_algorithm_names, AUTH_HMAC_MD5_96, AUTH_HMAC_SHA2_512_256, A
 	"HMAC_SHA2_256_128",
 	"HMAC_SHA2_384_192",
 	"HMAC_SHA2_512_256");
-ENUM_END(integrity_algorithm_names, AUTH_HMAC_SHA2_512_256);
+ENUM_NEXT(integrity_algorithm_names, AUTH_HMAC_SM3, AUTH_HMAC_SM3, AUTH_HMAC_SHA2_512_256,
+	"HMAC_SM3");
+ENUM_END(integrity_algorithm_names, AUTH_HMAC_SM3);
 

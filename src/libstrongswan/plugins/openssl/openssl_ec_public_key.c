@@ -134,12 +134,24 @@ static bool verify_der_signature(private_openssl_ec_public_key_t *this,
 	{
 		signature = chunk_skip(signature, 1);
 	}
-	if (openssl_hash_chunk(nid_hash, data, &hash))
+
+	if (openssl_hash_chunk_ext(nid_hash, data, &hash, this->ec))
+	{
+	if(nid_hash == NID_sm3)
+	{
+		valid = SM2_verify(0, hash.ptr, hash.len,
+							 signature.ptr, signature.len, this->ec) == 1;
+        fprintf(stdout, "%s %s:%u - SM2_verify: %d\n", __FUNCTION__, __FILE__, __LINE__, valid);
+	}
+	else
 	{
 		valid = ECDSA_verify(0, hash.ptr, hash.len,
 							 signature.ptr, signature.len, this->ec) == 1;
+        fprintf(stdout, "%s %s:%u - ECDSA_verify: %d\n", __FUNCTION__, __FILE__, __LINE__, valid);
+	}
 		free(hash.ptr);
 	}
+
 	return valid;
 }
 
@@ -163,6 +175,8 @@ METHOD(public_key_t, verify, bool,
 			return verify_der_signature(this, NID_sha384, data, signature);
 		case SIGN_ECDSA_WITH_SHA512_DER:
 			return verify_der_signature(this, NID_sha512, data, signature);
+		case SIGN_SM2_WITH_SM3_DER:
+			return verify_der_signature(this, NID_sm3, data, signature);
 		case SIGN_ECDSA_WITH_NULL:
 			return verify_signature(this, data, signature);
 		case SIGN_ECDSA_256:

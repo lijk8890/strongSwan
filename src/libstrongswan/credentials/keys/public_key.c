@@ -30,7 +30,7 @@ ENUM(key_type_names, KEY_ANY, KEY_BLISS,
 	"BLISS"
 );
 
-ENUM(signature_scheme_names, SIGN_UNKNOWN, SIGN_BLISS_WITH_SHA3_512,
+ENUM(signature_scheme_names, SIGN_UNKNOWN, SIGN_SM2_WITH_SM3_DER,
 	"UNKNOWN",
 	"RSA_EMSA_PKCS1_NULL",
 	"RSA_EMSA_PKCS1_MD5",
@@ -60,6 +60,7 @@ ENUM(signature_scheme_names, SIGN_UNKNOWN, SIGN_BLISS_WITH_SHA3_512,
 	"BLISS_WITH_SHA3_256",
 	"BLISS_WITH_SHA3_384",
 	"BLISS_WITH_SHA3_512",
+	"SM2_WITH_SM3_DER",
 );
 
 ENUM(encryption_scheme_names, ENCRYPT_UNKNOWN, ENCRYPT_RSA_OAEP_SHA512,
@@ -122,6 +123,9 @@ signature_scheme_t signature_scheme_from_oid(int oid)
 {
 	switch (oid)
 	{
+		case OID_SM2_WITH_SM3:
+		case OID_SM3:
+			return SIGN_SM2_WITH_SM3_DER;
 		case OID_MD5_WITH_RSA:
 		case OID_MD5:
 			return SIGN_RSA_EMSA_PKCS1_MD5;
@@ -187,6 +191,8 @@ int signature_scheme_to_oid(signature_scheme_t scheme)
 {
 	switch (scheme)
 	{
+		case SIGN_SM2_WITH_SM3_DER:
+			return OID_SM2_WITH_SM3;
 		case SIGN_UNKNOWN:
 		case SIGN_RSA_EMSA_PKCS1_NULL:
 		case SIGN_ECDSA_WITH_NULL:
@@ -273,7 +279,8 @@ static struct {
 	{ KEY_RSA,  3072, { .scheme = SIGN_RSA_EMSA_PKCS1_SHA2_256 }},
 	{ KEY_RSA,  7680, { .scheme = SIGN_RSA_EMSA_PKCS1_SHA2_384 }},
 	{ KEY_RSA,     0, { .scheme = SIGN_RSA_EMSA_PKCS1_SHA2_512 }},
-	{ KEY_ECDSA, 256, { .scheme = SIGN_ECDSA_WITH_SHA256_DER }},
+	{ KEY_ECDSA, 256, { .scheme = SIGN_SM2_WITH_SM3_DER      }},
+//	{ KEY_ECDSA, 256, { .scheme = SIGN_ECDSA_WITH_SHA256_DER }},
 	{ KEY_ECDSA, 384, { .scheme = SIGN_ECDSA_WITH_SHA384_DER }},
 	{ KEY_ECDSA,   0, { .scheme = SIGN_ECDSA_WITH_SHA512_DER }},
 	{ KEY_ED25519, 0, { .scheme = SIGN_ED25519 }},
@@ -341,6 +348,8 @@ key_type_t key_type_from_signature_scheme(signature_scheme_t scheme)
 {
 	switch (scheme)
 	{
+		case SIGN_SM2_WITH_SM3_DER:
+			return KEY_ECDSA;
 		case SIGN_UNKNOWN:
 			break;
 		case SIGN_RSA_EMSA_PKCS1_NULL:

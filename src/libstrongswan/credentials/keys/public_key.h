@@ -122,6 +122,8 @@ enum signature_scheme_t {
 	SIGN_BLISS_WITH_SHA3_384,
 	/** BLISS with SHA-3_512                                           */
 	SIGN_BLISS_WITH_SHA3_512,
+    /** SM2 with SM3                                                   */
+	SIGN_SM2_WITH_SM3_DER,
 };
 
 /**

@@ -53,7 +53,10 @@ ENUM_NEXT(encryption_algorithm_names, ENCR_UNDEFINED, ENCR_RC2_CBC, ENCR_CHACHA2
 	"SERPENT_CBC",
 	"TWOFISH_CBC",
 	"RC2_CBC");
-ENUM_END(encryption_algorithm_names, ENCR_RC2_CBC);
+ENUM_NEXT(encryption_algorithm_names, ENCR_SMS4, ENCR_SMS4_CBC, ENCR_RC2_CBC,
+	"SMS4",
+	"SMS4_CBC");
+ENUM_END(encryption_algorithm_names, ENCR_SMS4_CBC);
 
 /*
  * Described in header.
@@ -65,6 +68,14 @@ encryption_algorithm_t encryption_algorithm_from_oid(int oid, size_t *key_size)
 
 	switch (oid)
 	{
+		case OID_SMS4:
+			alg = ENCR_SMS4;
+			alg_key_size = 16;
+			break;
+		case OID_SMS4_CBC:
+			alg = ENCR_SMS4_CBC;
+			alg_key_size = 16;
+			break;
 		case OID_DES_CBC:
 			alg = ENCR_DES;
 			alg_key_size = 0;
@@ -121,6 +132,12 @@ int encryption_algorithm_to_oid(encryption_algorithm_t alg, size_t key_size)
 
 	switch(alg)
 	{
+		case ENCR_SMS4:
+			alg = OID_SMS4;
+			break;
+		case ENCR_SMS4_CBC:
+			alg = OID_SMS4_CBC;
+			break;
 		case ENCR_DES:
 			oid = OID_DES_CBC;
 			break;

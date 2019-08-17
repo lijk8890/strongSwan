@@ -28,6 +28,8 @@ iv_gen_t* iv_gen_create_for_alg(encryption_algorithm_t alg)
 {
 	switch (alg)
 	{
+		case ENCR_SMS4:
+		case ENCR_SMS4_CBC:
 		case ENCR_DES:
 		case ENCR_3DES:
 		case ENCR_RC5:

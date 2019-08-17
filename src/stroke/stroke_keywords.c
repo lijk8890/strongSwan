@@ -183,7 +183,7 @@ static const signed char lookup[] =
   };
 
 const struct stroke_token *
-in_word_set (register const char *str, register size_t len)
+in_word_set (register const char *str, register unsigned int len)
 {
   if (len <= MAX_WORD_LENGTH && len >= MIN_WORD_LENGTH)
     {

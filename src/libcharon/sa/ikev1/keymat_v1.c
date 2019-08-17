@@ -254,6 +254,8 @@ static uint16_t auth_to_prf(uint16_t alg)
 {
 	switch (alg)
 	{
+        case AUTH_HMAC_SM3:
+            return PRF_HMAC_SM3;
 		case AUTH_HMAC_SHA1_96:
 			return PRF_HMAC_SHA1;
 		case AUTH_HMAC_SHA2_256_128:
@@ -278,6 +280,8 @@ static uint16_t auth_to_hash(uint16_t alg)
 {
 	switch (alg)
 	{
+        case AUTH_HMAC_SM3:
+            return HASH_SM3;
 		case AUTH_HMAC_SHA1_96:
 			return HASH_SHA1;
 		case AUTH_HMAC_SHA2_256_128:

@@ -34,7 +34,9 @@ ENUM_NEXT(pseudo_random_function_names, PRF_HMAC_MD5, PRF_AES128_CMAC, PRF_CAMEL
 	"PRF_HMAC_SHA2_384",
 	"PRF_HMAC_SHA2_512",
 	"PRF_AES128_CMAC");
-ENUM_END(pseudo_random_function_names, PRF_AES128_CMAC);
+ENUM_NEXT(pseudo_random_function_names, PRF_HMAC_SM3, PRF_HMAC_SM3, PRF_AES128_CMAC,
+	"PRF_HMAC_SM3");
+ENUM_END(pseudo_random_function_names, PRF_HMAC_SM3);
 
 /*
  * Described in header.
@@ -43,6 +45,8 @@ pseudo_random_function_t pseudo_random_function_from_oid(int oid)
 {
 	switch (oid)
 	{
+        case OID_HMAC_SM3:
+            return PRF_HMAC_SM3;
 		case OID_HMAC_SHA1:
 			return PRF_HMAC_SHA1;
 		case OID_HMAC_SHA256:
